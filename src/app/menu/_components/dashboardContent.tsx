@@ -1,4 +1,36 @@
+import { Activity, CreditCard, DollarSign, Users } from "lucide-react";
+import { DashboardChart } from "./dashboardChart";
+import { DashboardRecentSales } from "./dashboardRecentSales";
+import { DashboardTiles } from "./dashboardTiles";
+
 export function DashboardContent() {
+  const data = [
+    {
+      title: "Total Revenue",
+      amount: "$45,231.89",
+      description: "+20.1% from last month",
+      icon: DollarSign,
+    },
+    {
+      title: "Subsciptions",
+      amount: "+2350",
+      description: "+180.1% from last month",
+      icon: Users,
+    },
+    {
+      title: "Sales",
+      amount: "+12,234",
+      description: "+19% from last month",
+      icon: CreditCard,
+    },
+    {
+      title: "Active Now",
+      amount: "+573",
+      description: "+201 since last hour",
+      icon: Activity,
+    },
+  ];
+
   return (
     <div className="py-2">
       <main className="flex w-full flex-col">
@@ -7,19 +39,19 @@ export function DashboardContent() {
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-xl border bg-card text-card-foreground shadow">
-              <div className="flex flex-row items-center justify-between space-y-0 p-6 pb-2">
-                <h3 className="text-sm font-medium tracking-tight">
-                  Total Revenue
-                </h3>
-              </div>
-              <div className="p-6 pt-0">
-                <div className="text-2xl font-bold">$45,231.89</div>
-                <p className="text-xs text-muted-foreground">
-                  +20.1% from last month
-                </p>
-              </div>
-            </div>
+            {data.map((tile) => (
+              <DashboardTiles
+                key={tile.title}
+                title={tile.title}
+                amount={tile.amount}
+                description={tile.description}
+                Icon={tile.icon}
+              />
+            ))}
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <DashboardChart />
+            <DashboardRecentSales />
           </div>
         </div>
       </main>

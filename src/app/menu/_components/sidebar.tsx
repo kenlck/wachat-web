@@ -15,8 +15,8 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="mt-2 flex w-56 grow flex-col gap-y-5 bg-white px-6 dark:bg-slate-900 lg:px-0">
-      <h1 className="text-lg font-medium">MyApp Name Here</h1>
+    <div className="flex grow flex-col gap-y-5 bg-white px-6 dark:bg-slate-900 lg:px-0">
+      <h1 className="mt-2 text-lg font-medium">MyApp Name Here</h1>
       <nav className="flex flex-1 flex-col">
         <ul className="flex flex-1 flex-col gap-y-7">
           <li>

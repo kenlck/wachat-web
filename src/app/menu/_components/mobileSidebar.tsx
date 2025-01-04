@@ -12,7 +12,7 @@ export default function MobileSidebar() {
     <>
       <button
         type="button"
-        className="-m-2.5 p-2.5 text-gray-700 sm:hidden"
+        className="-m-2.5 mt-1 p-2.5 text-gray-700 sm:hidden"
         onClick={() => setSidebarOpen(true)}
       >
         <span className="sr-only">Open sidebar</span>

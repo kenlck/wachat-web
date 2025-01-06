@@ -1,14 +1,14 @@
 "use client";
 
-import { Slot } from "@radix-ui/react-slot";
-import { type VariantProps, cva } from "class-variance-authority";
-import { PanelLeft } from "lucide-react";
-import * as React from "react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
@@ -18,6 +18,11 @@ import {
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { Slot } from "@radix-ui/react-slot";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
+import { type VariantProps, cva } from "class-variance-authority";
+import { PanelLeft } from "lucide-react";
+import * as React from "react";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -214,6 +219,14 @@ const Sidebar = React.forwardRef<
             }
             side={side}
           >
+            <VisuallyHidden.Root>
+              <>
+                <SheetTitle className="flex items-center gap-2">
+                  <span className="text-lg font-semibold">Menu</span>
+                </SheetTitle>
+                <SheetDescription>Description</SheetDescription>
+              </>
+            </VisuallyHidden.Root>
             <div className="flex h-full w-full flex-col">{children}</div>
           </SheetContent>
         </Sheet>

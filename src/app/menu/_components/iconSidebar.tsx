@@ -1,13 +1,3 @@
-"use client";
-
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-} from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -19,41 +9,55 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+  BadgeCheck,
+  Bell,
+  CreditCard,
+  File,
+  Inbox,
+  LogOut,
+  Settings,
+} from "lucide-react";
+import Link from "next/link";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
+export function IconSidebar() {
+  const user = {
+    name: "Alfred Tim",
+    email: "alfred_tim@gmail.com",
+    avatar: "https://cdn-icons-png.flaticon.com/256/3135/3135768.png",
   };
-}) {
-  // const { isMobile } = useSidebar();
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
+    <div className="flex flex-col justify-between p-4">
+      <div className="flex flex-col gap-4">
+        <Link href="/menu/chat">
+          <Inbox className="size-5" />
+        </Link>
+        <File className="size-5" />
+        <Link href="/menu/settings">
+          <Settings className="size-5" />
+        </Link>
+      </div>
+      {/* <picture>
+        <img
+          src="https://cdn-icons-png.flaticon.com/256/3135/3135768.png"
+          alt="Logo"
+          className="size-7 rounded-full border border-sidebar-border"
+        />
+      </picture> */}
+      <div className="-ml-1">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0"
-            >
+            <div>
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              {/* <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
                 <span className="truncate text-xs">{user.email}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4" />
-            </SidebarMenuButton>
+              </div> */}
+              {/* <ChevronsUpDown className="ml-auto size-4" /> */}
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
@@ -66,7 +70,6 @@ export function NavUser({
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{user.name}</span>
@@ -96,7 +99,7 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
+      </div>
+    </div>
   );
 }

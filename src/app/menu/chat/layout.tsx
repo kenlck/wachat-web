@@ -1,33 +1,25 @@
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
-import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { AppSidebar } from "./_components/appSidebar";
+import { ChatSidebar } from "../_components/chatSidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider
+      className="pl-2"
       style={
         {
           "--sidebar-width": "350px",
         } as React.CSSProperties
       }
     >
-      <AppSidebar />
+      <ChatSidebar />
       <SidebarInset>
-        <header className="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-4">
+        <header className="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-4 py-1">
           <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" />
+          {/* <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
@@ -38,17 +30,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <BreadcrumbPage>Inbox</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
-          </Breadcrumb>
+          </Breadcrumb> */}
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          {/* {Array.from({ length: 24 }).map((_, index) => (
-            <div
-              key={index}
-              className="aspect-video h-12 w-full rounded-lg bg-muted/50"
-            />
-          ))} */}
-          {children}
-        </div>
+        <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

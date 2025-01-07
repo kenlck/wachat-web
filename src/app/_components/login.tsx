@@ -15,7 +15,7 @@ export function Login() {
         <Input label="Password" type="password" />
         <Button
           onClick={() => {
-            router.push("/menu/dashboard");
+            router.push("/menu/chat");
           }}
         >
           Log In

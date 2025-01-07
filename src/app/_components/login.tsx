@@ -14,6 +14,7 @@ export function Login() {
         <Input label="Username" />
         <Input label="Password" type="password" />
         <Button
+          className="mt-2"
           onClick={() => {
             router.push("/menu/chat");
           }}

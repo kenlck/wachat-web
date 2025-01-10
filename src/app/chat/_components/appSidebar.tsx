@@ -1,5 +1,8 @@
 "use client";
 
+import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
+import * as React from "react";
+
 import { NavUser } from "@/components/nav-user";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,15 +19,13 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
-import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
-import * as React from "react";
 
 // This is sample data
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "https://cdn-icons-png.flaticon.com/512/9368/9368199.png",
   },
   navMain: [
     {
@@ -66,6 +67,9 @@ const data = {
       date: "09:34 AM",
       teaser:
         "Hi team, just a reminder about our meeting tomorrow at 10 AM.\nPlease come prepared with your project updates.",
+      content:
+        "Hi team, just a reminder about our meeting tomorrow at 10 AM.\nPlease come prepared with your project updates.",
+      id: 1,
     },
     {
       name: "Alice Smith",
@@ -74,6 +78,9 @@ const data = {
       date: "Yesterday",
       teaser:
         "Thanks for the update. The progress looks great so far.\nLet's schedule a call to discuss the next steps.",
+      content:
+        "Thanks for the update. The progress looks great so far.\nLet's schedule a call to discuss the next steps.",
+      id: 2,
     },
     {
       name: "Bob Johnson",
@@ -82,6 +89,9 @@ const data = {
       date: "2 days ago",
       teaser:
         "Hey everyone! I'm thinking of organizing a team outing this weekend.\nWould you be interested in a hiking trip or a beach day?",
+      content:
+        "Hey everyone! I'm thinking of organizing a team outing this weekend.\nWould you be interested in a hiking trip or a beach day?",
+      id: 3,
     },
     {
       name: "Emily Davis",
@@ -90,6 +100,9 @@ const data = {
       date: "2 days ago",
       teaser:
         "I've reviewed the budget numbers you sent over.\nCan we set up a quick call to discuss some potential adjustments?",
+      content:
+        "I've reviewed the budget numbers you sent over.\nCan we set up a quick call to discuss some potential adjustments?",
+      id: 4,
     },
     {
       name: "Michael Wilson",
@@ -98,6 +111,9 @@ const data = {
       date: "1 week ago",
       teaser:
         "Please join us for an all-hands meeting this Friday at 3 PM.\nWe have some exciting news to share about the company's future.",
+      content:
+        "Please join us for an all-hands meeting this Friday at 3 PM.\nWe have some exciting news to share about the company's future.",
+      id: 5,
     },
     {
       name: "Sarah Brown",
@@ -106,6 +122,9 @@ const data = {
       date: "1 week ago",
       teaser:
         "Thank you for sending over the proposal. I've reviewed it and have some thoughts.\nCould we schedule a meeting to discuss my feedback in detail?",
+      content:
+        "Thank you for sending over the proposal. I've reviewed it and have some thoughts.\nCould we schedule a meeting to discuss my feedback in detail?",
+      id: 6,
     },
     {
       name: "David Lee",
@@ -114,6 +133,9 @@ const data = {
       date: "1 week ago",
       teaser:
         "I've been brainstorming and came up with an interesting project concept.\nDo you have time this week to discuss its potential impact and feasibility?",
+      content:
+        "I've been brainstorming and came up with an interesting project concept.\nDo you have time this week to discuss its potential impact and feasibility?",
+      id: 7,
     },
     {
       name: "Olivia Wilson",
@@ -122,6 +144,9 @@ const data = {
       date: "1 week ago",
       teaser:
         "Just a heads up that I'll be taking a two-week vacation next month.\nI'll make sure all my projects are up to date before I leave.",
+      content:
+        "Just a heads up that I'll be taking a two-week vacation next month.\nI'll make sure all my projects are up to date before I leave.",
+      id: 8,
     },
     {
       name: "James Martin",
@@ -130,6 +155,9 @@ const data = {
       date: "1 week ago",
       teaser:
         "I've completed the registration for the upcoming tech conference.\nLet me know if you need any additional information from my end.",
+      content:
+        "I've completed the registration for the upcoming tech conference.\nLet me know if you need any additional information from my end.",
+      id: 9,
     },
     {
       name: "Sophia White",
@@ -138,6 +166,9 @@ const data = {
       date: "1 week ago",
       teaser:
         "To celebrate our recent project success, I'd like to organize a team dinner.\nAre you available next Friday evening? Please let me know your preferences.",
+      content:
+        "To celebrate our recent project success, I'd like to organize a team dinner.\nAre you available next Friday evening? Please let me know your preferences.",
+      id: 10,
     },
   ],
 };
@@ -146,7 +177,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
   const [activeItem, setActiveItem] = React.useState(data.navMain[0]);
-  const [mails] = React.useState(data.mails);
+  const [mails, setMails] = React.useState(data.mails);
   const { setOpen } = useSidebar();
 
   return (
@@ -186,12 +217,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {data.navMain.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      tooltip={{
-                        children: item.title,
-                        hidden: false,
-                      }}
+                      // tooltip={{
+                      //   children: item.title,
+                      //   hidden: false,
+                      // }}
                       onClick={() => {
                         setActiveItem(item);
+                        const mail = data.mails.sort(() => Math.random() - 0.5);
+                        setMails(
+                          mail.slice(
+                            0,
+                            Math.max(5, Math.floor(Math.random() * 10) + 1),
+                          ),
+                        );
                         setOpen(true);
                       }}
                       isActive={activeItem?.title === item.title}
@@ -231,7 +269,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroupContent>
               {mails.map((mail) => (
                 <a
-                  href="#"
+                  href={`/chat/${mail.id}`}
                   key={mail.email}
                   className="flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                 >

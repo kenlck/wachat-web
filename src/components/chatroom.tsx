@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { api } from "@/trpc/react";
 import {
   QueryClient,
   QueryClientProvider,
@@ -25,6 +26,7 @@ function ChatroomInner({ id }: { id: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { data } = api.message.roomList.useQuery();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -87,7 +89,7 @@ function ChatroomInner({ id }: { id: string }) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (input.trim() && !mutation.isLoading) {
+    if (input.trim() && !mutation.isPending) {
       mutation.mutate(input.trim());
     }
   };
@@ -127,7 +129,7 @@ function ChatroomInner({ id }: { id: string }) {
             </div>
           </div>
         ))}
-        {mutation.isLoading && (
+        {mutation.isPending && (
           <div className="mb-4 flex justify-start">
             <div className="flex items-center gap-2">
               <Avatar>
@@ -161,7 +163,7 @@ function ChatroomInner({ id }: { id: string }) {
               className="h-9 flex-grow"
             />
           </div>
-          <Button type="submit" disabled={mutation.isLoading || !input.trim()}>
+          <Button type="submit" disabled={mutation.isPending || !input.trim()}>
             Send
           </Button>
         </form>

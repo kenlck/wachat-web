@@ -1,6 +1,6 @@
 "use client";
 
-import { NavUser } from "@/components/nav-user";
+import { NavUser } from "@/components/navUser";
 import { Label } from "@/components/ui/label";
 import {
   Sidebar,

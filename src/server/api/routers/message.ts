@@ -23,6 +23,24 @@ export const messageRouter = createTRPCRouter({
     });
     return messages;
   }),
+  messages: publicProcedure
+    .input(
+      z.object({
+        waAccountId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const messages = await db.message.findMany({
+        where: {
+          waAccountId: input.waAccountId,
+        },
+        orderBy: {
+          createdAt: "asc",
+        },
+      });
+      return messages;
+    }),
+
   create: protectedProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {

@@ -18,6 +18,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
 import * as React from "react";
+import { ChatroomList } from "../app/chat/_components/chatroomList";
 
 // This is sample data
 const data = {
@@ -227,7 +228,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarInput placeholder="Type to search..." />
         </SidebarHeader>
         <SidebarContent>
-          <SidebarGroup className="px-0">
+          {/* <SidebarGroup className="px-0">
             <SidebarGroupContent>
               {mails.map((mail) => (
                 <a
@@ -246,7 +247,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </a>
               ))}
             </SidebarGroupContent>
-          </SidebarGroup>
+          </SidebarGroup> */}
+          <ChatroomList />
         </SidebarContent>
       </Sidebar>
     </Sidebar>

@@ -5,12 +5,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-} from "@tanstack/react-query";
-import { AlertCircle } from "lucide-react";
+import { api } from "@/trpc/react";
+import { useMutation } from "@tanstack/react-query";
+import { AlertCircle, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface Message {
@@ -19,18 +16,66 @@ interface Message {
   sender: "user" | "api";
 }
 
-const queryClient = new QueryClient();
-
 function ChatroomInner({ id }: { id: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { data } = api.message.messages.useQuery(
+    {
+      waAccountId: id,
+    },
+    {
+      refetchIntervalInBackground: true,
+      refetchInterval: 1000,
+    },
+  );
+
+  const isNearBottom = () => {
+    const container = scrollAreaRef.current;
+    if (!container) return true;
+
+    const threshold = 100; // pixels from bottom
+    return (
+      container.scrollHeight - container.scrollTop - container.clientHeight <
+      threshold
+    );
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setShowScrollButton(false);
   };
 
-  useEffect(scrollToBottom, [messages]);
+  const handleScroll = () => {
+    setShowScrollButton(!isNearBottom());
+  };
+
+  useEffect(() => {
+    if (!data) return;
+    const newMessages = data.map((m) => ({
+      id: m.id,
+      content: m.body,
+      sender: "api" as const,
+    }));
+
+    setMessages((prevMessages) => {
+      const existingIds = new Set(prevMessages.map((m) => m.id));
+      const uniqueNewMessages = newMessages.filter(
+        (m) => !existingIds.has(m.id),
+      );
+      return [...prevMessages, ...uniqueNewMessages];
+    });
+  }, [data]);
+
+  useEffect(() => {
+    if (isNearBottom()) {
+      scrollToBottom();
+    } else {
+      setShowScrollButton(true);
+    }
+  }, [messages]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -87,7 +132,7 @@ function ChatroomInner({ id }: { id: string }) {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (input.trim() && !mutation.isLoading) {
+    if (input.trim() && !mutation.isPending) {
       mutation.mutate(input.trim());
     }
   };
@@ -95,7 +140,11 @@ function ChatroomInner({ id }: { id: string }) {
   return (
     <div className="mx-auto flex h-[calc(100svh-61px-16px)] w-full flex-col overflow-y-auto">
       {/* <p>Chatroom {id}</p> */}
-      <ScrollArea className="flex-1 pr-4">
+      <ScrollArea
+        className="flex-1 pr-4"
+        ref={scrollAreaRef}
+        onScroll={handleScroll}
+      >
         {/* <ScrollArea className="h-[60vh] pr-4"> */}
         {messages.map((m, index) => (
           <div
@@ -127,7 +176,7 @@ function ChatroomInner({ id }: { id: string }) {
             </div>
           </div>
         ))}
-        {mutation.isLoading && (
+        {mutation.isPending && (
           <div className="mb-4 flex justify-start">
             <div className="flex items-center gap-2">
               <Avatar>
@@ -151,6 +200,18 @@ function ChatroomInner({ id }: { id: string }) {
         )}
         <div ref={messagesEndRef} />
       </ScrollArea>
+
+      {showScrollButton && (
+        <Button
+          variant="outline"
+          size="icon"
+          className="absolute bottom-20 right-8 rounded-full"
+          onClick={scrollToBottom}
+        >
+          <ChevronDown className="h-4 w-4" />
+        </Button>
+      )}
+
       <div>
         <form onSubmit={handleSubmit} className="flex w-full space-x-2">
           <div className="flex-1">
@@ -161,7 +222,7 @@ function ChatroomInner({ id }: { id: string }) {
               className="h-9 flex-grow"
             />
           </div>
-          <Button type="submit" disabled={mutation.isLoading || !input.trim()}>
+          <Button type="submit" disabled={mutation.isPending || !input.trim()}>
             Send
           </Button>
         </form>
@@ -171,9 +232,5 @@ function ChatroomInner({ id }: { id: string }) {
 }
 
 export function Chatroom({ id }: { id: string }) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ChatroomInner id={id} />
-    </QueryClientProvider>
-  );
+  return <ChatroomInner id={id} />;
 }

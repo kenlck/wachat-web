@@ -1,6 +1,6 @@
 "use client";
 
-import { Command, File, Inbox, Settings, Trash2 } from "lucide-react";
+import { Command, Inbox } from "lucide-react";
 import * as React from "react";
 
 import { NavUser } from "@/components/navUser";
@@ -35,24 +35,24 @@ const data = {
       icon: Inbox,
       isActive: true,
     },
-    {
-      title: "Drafts",
-      url: "/menu/drafts",
-      icon: File,
-      isActive: false,
-    },
-    {
-      title: "Settings",
-      url: "/menu/settings",
-      icon: Settings,
-      isActive: false,
-    },
-    {
-      title: "Trash",
-      url: "/menu/trash",
-      icon: Trash2,
-      isActive: false,
-    },
+    // {
+    //   title: "Drafts",
+    //   url: "/menu/drafts",
+    //   icon: File,
+    //   isActive: false,
+    // },
+    // {
+    //   title: "Settings",
+    //   url: "/menu/settings",
+    //   icon: Settings,
+    //   isActive: false,
+    // },
+    // {
+    //   title: "Trash",
+    //   url: "/menu/trash",
+    //   icon: Trash2,
+    //   isActive: false,
+    // },
   ],
   mails: [
     {

@@ -10,7 +10,7 @@ import { db } from "@/server/db";
 export const messageRouter = createTRPCRouter({
   roomList: publicProcedure.query(async ({ ctx }) => {
     const messages = await db.message.findMany({
-      distinct: ["waAccountId"],
+      distinct: ["phoneNumberId"],
       orderBy: {
         createdAt: "desc",
       },
@@ -19,6 +19,7 @@ export const messageRouter = createTRPCRouter({
         body: true,
         createdAt: true,
         profileName: true,
+        phoneNumberId: true,
       },
     });
     return messages;
@@ -26,13 +27,13 @@ export const messageRouter = createTRPCRouter({
   messages: publicProcedure
     .input(
       z.object({
-        waAccountId: z.string(),
+        phoneNumberId: z.string(),
       }),
     )
     .query(async ({ ctx, input }) => {
       const messages = await db.message.findMany({
         where: {
-          waAccountId: input.waAccountId,
+          phoneNumberId: input.phoneNumberId,
         },
         orderBy: {
           createdAt: "asc",

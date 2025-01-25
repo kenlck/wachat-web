@@ -53,7 +53,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = (await request.json()) as WhatsAppWebhookBodyDTO;
-
+  console.log(body);
   try {
     for (const entry of body.entry) {
       for (const change of entry.changes) {
@@ -63,11 +63,12 @@ export async function POST(request: Request) {
               data: {
                 waMessageId: message.id,
                 waAccountId: change.value.metadata.phone_number_id,
-                phoneNumberId: change.value.metadata.phone_number_id,
+                phoneNumberId: message.from,
                 timestamp: new Date(parseInt(message.timestamp) * 1000),
                 profileName: change.value.contacts[0]?.profile?.name ?? "",
                 body: message.text.body,
                 messageType: message.type,
+                type: "user",
               },
             });
           }

@@ -141,7 +141,7 @@ function ChatroomInner({ id }: { id: string }) {
     <div className="mx-auto flex h-[calc(100svh-61px-16px)] w-full flex-col overflow-y-auto">
       {/* <p>Chatroom {id}</p> */}
       <ScrollArea
-        className="flex-1 pr-4"
+        className="flex-1 py-2 pr-4"
         ref={scrollAreaRef}
         onScroll={handleScroll}
       >

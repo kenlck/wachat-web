@@ -40,7 +40,7 @@ function ChatroomInner({ id }: { id: string }) {
     const container = scrollAreaRef.current;
     if (!container) return true;
 
-    const threshold = 100; // pixels from bottom
+    const threshold = 20; // pixels from bottom
     return (
       container.scrollHeight - container.scrollTop - container.clientHeight <
       threshold
@@ -82,7 +82,7 @@ function ChatroomInner({ id }: { id: string }) {
     } else {
       setShowScrollButton(true);
     }
-  }, [messages]);
+  }, [messages.length]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -150,7 +150,7 @@ function ChatroomInner({ id }: { id: string }) {
     <div className="mx-auto flex h-[calc(100svh-61px-16px)] w-full flex-col overflow-y-auto">
       {/* <p>Chatroom {id}</p> */}
       <ScrollArea
-        className="flex-1 pr-4"
+        className="flex-1 py-2 pr-4"
         ref={scrollAreaRef}
         onScroll={handleScroll}
       >

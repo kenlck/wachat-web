@@ -18,11 +18,11 @@ export function ChatroomList() {
       <SidebarGroupContent>
         {data?.map((mail) => (
           <Link
-            href={`/menu/chat/${mail.waAccountId}`}
-            key={mail.waAccountId}
+            href={`/menu/chat/${mail.phoneNumberId}`}
+            key={mail.phoneNumberId}
             className={cn(
               "flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-              currentRoomId === mail.waAccountId
+              currentRoomId === mail.phoneNumberId
                 ? "bg-sidebar-accent text-sidebar-accent-foreground"
                 : "",
             )}

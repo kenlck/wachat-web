@@ -1,9 +1,9 @@
 "use client";
 
-import { Command, File, Inbox, Settings, Trash2 } from "lucide-react";
+import { Command, Inbox } from "lucide-react";
 import * as React from "react";
 
-import { NavUser } from "@/components/nav-user";
+import { NavUser } from "@/components/navUser";
 import { Label } from "@/components/ui/label";
 import {
   Sidebar,
@@ -35,24 +35,24 @@ const data = {
       icon: Inbox,
       isActive: true,
     },
-    {
-      title: "Drafts",
-      url: "#",
-      icon: File,
-      isActive: false,
-    },
-    {
-      title: "Settings",
-      url: "/menu/settings",
-      icon: Settings,
-      isActive: false,
-    },
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
-      isActive: false,
-    },
+    // {
+    //   title: "Drafts",
+    //   url: "/menu/drafts",
+    //   icon: File,
+    //   isActive: false,
+    // },
+    // {
+    //   title: "Settings",
+    //   url: "/menu/settings",
+    //   icon: Settings,
+    //   isActive: false,
+    // },
+    // {
+    //   title: "Trash",
+    //   url: "/menu/trash",
+    //   icon: Trash2,
+    //   isActive: false,
+    // },
   ],
   mails: [
     {
@@ -152,7 +152,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
   const [activeItem, setActiveItem] = React.useState(data.navMain[0]);
-  const [mails] = React.useState(data.mails);
   const { setOpen } = useSidebar();
 
   return (

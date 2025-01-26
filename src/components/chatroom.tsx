@@ -14,6 +14,7 @@ interface Message {
   id: string;
   content: string;
   sender: "user" | "api";
+  name: string;
 }
 
 function ChatroomInner({ id }: { id: string }) {
@@ -22,9 +23,10 @@ function ChatroomInner({ id }: { id: string }) {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+
   const { data } = api.message.messages.useQuery(
     {
-      waAccountId: id,
+      phoneNumberId: id,
     },
     {
       refetchIntervalInBackground: true,
@@ -32,6 +34,8 @@ function ChatroomInner({ id }: { id: string }) {
     },
   );
 
+  const d = data?.find((d) => d.type !== "api");
+  const phoneNumber = d?.phoneNumberId ?? "";
   const isNearBottom = () => {
     const container = scrollAreaRef.current;
     if (!container) return true;
@@ -57,7 +61,8 @@ function ChatroomInner({ id }: { id: string }) {
     const newMessages = data.map((m) => ({
       id: m.id,
       content: m.body,
-      sender: "api" as const,
+      sender: (m.type as "user" | "api" | null) ?? "user",
+      name: m.profileName,
     }));
 
     setMessages((prevMessages) => {
@@ -65,7 +70,9 @@ function ChatroomInner({ id }: { id: string }) {
       const uniqueNewMessages = newMessages.filter(
         (m) => !existingIds.has(m.id),
       );
-      return [...prevMessages, ...uniqueNewMessages];
+      return [...prevMessages, ...uniqueNewMessages].filter(
+        (m) => !m.id.startsWith("tmp"),
+      );
     });
   }, [data]);
 
@@ -88,7 +95,7 @@ function ChatroomInner({ id }: { id: string }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, phoneNumber: phoneNumber }),
       });
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
@@ -97,9 +104,10 @@ function ChatroomInner({ id }: { id: string }) {
     },
     onMutate: (variables) => {
       const userMessage: Message = {
-        id: Date.now().toString(),
+        id: "tmp" + Date.now().toString(),
         content: variables,
-        sender: "user",
+        sender: "api",
+        name: "API",
       };
       setMessages((prev) => [...prev, userMessage]);
       setInput("");
@@ -108,12 +116,12 @@ function ChatroomInner({ id }: { id: string }) {
       if (!data || typeof data.message !== "string") {
         throw new Error("Invalid response from API");
       }
-      const apiMessage: Message = {
-        id: Date.now().toString(),
-        content: data.message,
-        sender: "api",
-      };
-      setMessages((prev) => [...prev, apiMessage]);
+      // const apiMessage: Message = {
+      //   id: Date.now().toString(),
+      //   content: data.message,
+      //   sender: "api",
+      // };
+      // setMessages((prev) => [...prev, apiMessage]);
     },
     onError: (error) => {
       console.error("Error:", error);
@@ -125,6 +133,7 @@ function ChatroomInner({ id }: { id: string }) {
           id: Date.now().toString(),
           content: `Error: ${errorMessage}`,
           sender: "api",
+          name: "API",
         },
       ]);
     },
@@ -149,14 +158,14 @@ function ChatroomInner({ id }: { id: string }) {
         {messages.map((m, index) => (
           <div
             key={`${m.id}${index}`}
-            className={`mb-4 flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}
+            className={`mb-4 flex ${m.sender === "api" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`flex items-start gap-2 ${m.sender === "user" ? "flex-row-reverse" : ""}`}
+              className={`flex items-start gap-2 ${m.sender === "api" ? "flex-row-reverse" : ""}`}
             >
               <Avatar>
                 <AvatarFallback>
-                  {m.sender === "user" ? "U" : "A"}
+                  {m.sender === "user" ? m.name.charAt(0) : "U"}
                 </AvatarFallback>
                 <AvatarImage
                   src={
@@ -166,7 +175,7 @@ function ChatroomInner({ id }: { id: string }) {
               </Avatar>
               <div
                 className={`max-w-[80%] rounded-lg px-3 py-2 ${
-                  m.sender === "user"
+                  m.sender === "api"
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted"
                 }`}
@@ -177,13 +186,13 @@ function ChatroomInner({ id }: { id: string }) {
           </div>
         ))}
         {mutation.isPending && (
-          <div className="mb-4 flex justify-start">
+          <div className="mb-4 flex justify-center">
             <div className="flex items-center gap-2">
-              <Avatar>
+              {/* <Avatar>
                 <AvatarFallback>A</AvatarFallback>
                 <AvatarImage src="/api-avatar.png" />
-              </Avatar>
-              <div className="rounded-lg bg-muted px-3 py-2">Typing...</div>
+              </Avatar> */}
+              <div className="rounded-lg bg-muted px-3 py-2">Sending...</div>
             </div>
           </div>
         )}

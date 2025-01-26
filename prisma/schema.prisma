@@ -93,5 +93,7 @@ model Message {
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
+  type String? @map("type")
+
   @@map("messages")
 }

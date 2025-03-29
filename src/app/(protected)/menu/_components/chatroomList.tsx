@@ -1,13 +1,10 @@
 "use client";
 
+import { SidebarGroup, SidebarGroupContent } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-} from "../../../components/ui/sidebar";
 
 export function ChatroomList() {
   const { data } = api.message.roomList.useQuery();

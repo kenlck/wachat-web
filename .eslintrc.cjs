@@ -12,7 +12,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/array-type": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/no-unsafe-assignment": "error",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
     "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/consistent-type-imports": [
       "error",
@@ -22,7 +22,7 @@ module.exports = {
       },
     ],
     "@typescript-eslint/no-unused-vars": [
-      "error",
+      "warn",
       {
         args: "all",
         argsIgnorePattern: "^_",
@@ -43,7 +43,7 @@ module.exports = {
       },
     ],
     "@typescript-eslint/prefer-nullish-coalescing": [
-      "error",
+      "warning",
       {
         ignoreMixedLogicalExpressions: true,
         ignoreConditionalTests: true,

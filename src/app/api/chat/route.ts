@@ -6,7 +6,10 @@ const businessId = process.env.BUSINESS_ID;
 
 export async function POST(req: Request) {
   try {
-    const { message, phoneNumber } = await req.json();
+    const { message, phoneNumber } = (await req.json()) as {
+      message: string;
+      phoneNumber: string;
+    };
 
     if (typeof message !== "string") {
       throw new Error("Invalid message format");

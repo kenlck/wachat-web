@@ -1,5 +1,6 @@
 "use client";
 
+import { ChatroomList } from "@/app/(protected)/menu/_components/chatroomList";
 import { NavUser } from "@/components/navUser";
 import { Label } from "@/components/ui/label";
 import {
@@ -18,7 +19,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
 import * as React from "react";
-import { ChatroomList } from "../app/chat/_components/chatroomList";
+// import { ChatroomList } from "../app/chat/_components/chatroomList";
 
 // This is sample data
 const data = {

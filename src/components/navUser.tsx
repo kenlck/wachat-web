@@ -75,8 +75,8 @@ export function NavUser({
             <DropdownMenuSeparator />
 
             <DropdownMenuItem
-              onClick={() => {
-                signOut({ callbackUrl: "/" });
+              onClick={async () => {
+                await signOut({ callbackUrl: "/" });
               }}
             >
               <LogOut />

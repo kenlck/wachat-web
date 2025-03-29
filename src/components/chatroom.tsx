@@ -100,7 +100,7 @@ function ChatroomInner({ id }: { id: string }) {
       if (!response.ok) {
         throw new Error(`API request failed with status ${response.status}`);
       }
-      return response.json();
+      return response.json() as Promise<{ message: string }>;
     },
     onMutate: (variables) => {
       const userMessage: Message = {
